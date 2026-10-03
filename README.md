@@ -6,7 +6,9 @@ My [oh-my-pi](https://github.com/can1357/oh-my-pi) (`omp`) customizations.
 
 ### `context-tokens`
 
-Shows how many tokens are in the context window, out of the model's window, as `24.6k/200k`. omp's built-in `context_pct` segment shows a percentage and the window size, but not the used count.
+Shows how many tokens are in the context window as `24.6k/272k`. omp's built-in `context_pct` segment shows a percentage and the window size, but not the used count.
+
+The denominator is `compaction.thresholdTokens` when that is set (positive) and below the model's window, so it's the point where omp compacts. Otherwise it's the model's window. It does not account for `compaction.thresholdPercent` or the default reserve-based threshold, so with those it shows the window.
 
 It sets a status with `ctx.ui.setStatus("context-tokens", ...)` after anything that changes the context: session start, switch, branch, tree navigation, compaction, and every turn end. Right after a compaction omp doesn't know the used count yet, so it shows `?/200k` until the next turn.
 
