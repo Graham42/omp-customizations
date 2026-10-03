@@ -1,0 +1,12 @@
+{
+	"name": "omp-customizations",
+	"private": true,
+	"type": "module",
+	"description": "My oh-my-pi (omp) customizations",
+	"omp": {
+		"extensions": ["./src/context-tokens.ts"]
+	},
+	"scripts": {
+		"test": "bun test"
+	}
+}

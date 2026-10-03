@@ -1,0 +1,23 @@
+import { expect, test } from "bun:test";
+import { formatContextTokens, formatTokens } from "./context-tokens";
+
+test("formatTokens uses k/M with no trailing .0", () => {
+	expect(formatTokens(950)).toBe("950");
+	expect(formatTokens(24_600)).toBe("24.6k");
+	expect(formatTokens(200_000)).toBe("200k");
+	expect(formatTokens(1_000_000)).toBe("1M");
+	expect(formatTokens(1_250_000)).toBe("1.3M");
+});
+
+test("formatContextTokens shows used/window", () => {
+	expect(formatContextTokens({ tokens: 24_600, contextWindow: 200_000 })).toBe("24.6k/200k");
+});
+
+test("unknown usage after compaction still shows the window", () => {
+	expect(formatContextTokens({ tokens: null, contextWindow: 200_000 })).toBe("?/200k");
+});
+
+test("no known window clears the status", () => {
+	expect(formatContextTokens(undefined)).toBeUndefined();
+	expect(formatContextTokens({ tokens: 10, contextWindow: 0 })).toBeUndefined();
+});

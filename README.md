@@ -1,0 +1,40 @@
+# omp-customizations
+
+My [oh-my-pi](https://github.com/can1357/oh-my-pi) (`omp`) customizations.
+
+## Extensions
+
+### `context-tokens`
+
+Shows how many tokens are in the context window, out of the model's window, as `24.6k/200k`. omp's built-in `context_pct` segment shows a percentage and the window size, but not the used count.
+
+It sets a status with `ctx.ui.setStatus("context-tokens", ...)` after anything that changes the context: session start, switch, branch, tree navigation, compaction, and every turn end. Right after a compaction omp doesn't know the used count yet, so it shows `?/200k` until the next turn.
+
+omp only renders extension statuses where the `status` segment is in the status line, and `status` is only honoured with `statusLine.preset: custom`. In `~/.omp/agent/config.yml`:
+
+```yaml
+statusLine:
+  preset: custom
+  rightSegments:
+    - session_name
+    - status
+```
+
+## Install
+
+omp discovers extension directories with an `omp.extensions` manifest under `~/.omp/agent/extensions/`, so link this repo there:
+
+```sh
+mkdir -p ~/.omp/agent/extensions
+ln -s "$PWD" ~/.omp/agent/extensions/omp-customizations
+```
+
+Or try it for one run without installing: `omp -e ./src/context-tokens.ts`.
+
+## Test
+
+```sh
+bun test
+```
+
+This covers the number formatting only. The extension itself was checked by running `omp --mode rpc -e ./src/context-tokens.ts` and looking for the `setStatus` request with `statusKey: "context-tokens"`.
