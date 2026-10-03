@@ -21,3 +21,11 @@ export function formatContextTokens(usage: ContextUsage | undefined, limit = -1)
 	const max = limit > 0 && limit < usage.contextWindow ? limit : usage.contextWindow;
 	return `${used}/${formatTokens(max)}`;
 }
+
+/** Windows above this get compacted at this many tokens; smaller windows keep omp's default. */
+export const LARGE_WINDOW_COMPACT_AT = 272_000;
+
+/** Compaction token limit to force for a model window, or undefined to leave omp's default. */
+export function compactionLimitFor(contextWindow: number): number | undefined {
+	return contextWindow > LARGE_WINDOW_COMPACT_AT ? LARGE_WINDOW_COMPACT_AT : undefined;
+}

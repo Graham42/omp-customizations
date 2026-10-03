@@ -1,5 +1,5 @@
 import { expect, test } from "bun:test";
-import { formatContextTokens, formatTokens } from "./format";
+import { compactionLimitFor, formatContextTokens, formatTokens } from "./format";
 
 test("formatTokens uses k/M with no trailing .0", () => {
 	expect(formatTokens(950)).toBe("950");
@@ -29,4 +29,10 @@ test("a compaction limit below the window becomes the denominator", () => {
 test("an unset (-1) or larger-than-window limit falls back to the window", () => {
 	expect(formatContextTokens({ tokens: 1_000, contextWindow: 200_000 }, -1)).toBe("1k/200k");
 	expect(formatContextTokens({ tokens: 1_000, contextWindow: 200_000 }, 272_000)).toBe("1k/200k");
+});
+
+test("only windows above the cap get a forced compaction limit", () => {
+	expect(compactionLimitFor(1_000_000)).toBe(272_000);
+	expect(compactionLimitFor(272_000)).toBeUndefined();
+	expect(compactionLimitFor(200_000)).toBeUndefined();
 });
