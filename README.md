@@ -14,14 +14,14 @@ The denominator is the forced limit when there is one, else the model's window. 
 
 It sets a status with `ctx.ui.setStatus("context-tokens", ...)` after anything that changes the context: session start, switch, branch, tree navigation, compaction, and every turn end. Right after a compaction omp doesn't know the used count yet, so it shows `?/200k` until the next turn.
 
-omp only renders extension statuses where the `status` segment is in the status line, and `status` is only honoured with `statusLine.preset: custom`. I put it right after `context_pct` so the two sit together. In `~/.omp/agent/config.yml`:
+omp only renders extension statuses where the `status` segment is in the status line, and `status` is only honoured with `statusLine.preset: custom`. I use it in place of `context_pct`. In `~/.omp/agent/config.yml`:
 
 ```yaml
 statusLine:
   preset: custom
   leftSegments:
     # ...
-    - context_pct
+    - pr
     - status
     - cost
   showHookStatus: false
