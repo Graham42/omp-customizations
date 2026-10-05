@@ -29,6 +29,12 @@ statusLine:
 
 `showHookStatus: false` is needed too. Without it omp also prints extension statuses on a footer line under the status line, so the value shows twice.
 
+### `grill-ask-reminder`
+
+When I invoke `/skill:grill-me` or `/skill:grill-with-docs`, adds a message telling the model to ask the grilling questions with the `ask` tool instead of writing them as chat text. Other skills, including `grilling` itself, are unaffected. omp has no bare `/grill-me` command, so only the `/skill:` form is matched (leading, or as a token mid-prompt).
+
+The `input` hook sees the raw text, but the skill is delivered as a custom message that bypasses it, so the hook only sets a flag and `before_agent_start` injects the reminder on that turn. Change `GRILL_SKILLS` and `REMINDER` in `src/grill-ask-reminder.ts` to adjust.
+
 ## Install
 
 omp discovers extension directories with an `omp.extensions` manifest under `~/.omp/agent/extensions/`, so link this repo there:
@@ -38,7 +44,7 @@ mkdir -p ~/.omp/agent/extensions
 ln -s "$PWD" ~/.omp/agent/extensions/omp-customizations
 ```
 
-Or try it for one run without installing: `omp -e ./src/context-tokens.ts`.
+Or try one for a single run without installing: `omp -e ./src/context-tokens.ts`.
 
 ## Test
 
@@ -46,4 +52,4 @@ Or try it for one run without installing: `omp -e ./src/context-tokens.ts`.
 bun test
 ```
 
-This covers the number formatting only. The extension itself was checked by running `omp --mode rpc -e ./src/context-tokens.ts` and looking for the `setStatus` request with `statusKey: "context-tokens"`.
+This covers the number formatting and the grill skill matcher. `context-tokens` itself was checked by running `omp --mode rpc -e ./src/context-tokens.ts` and looking for the `setStatus` request with `statusKey: "context-tokens"`.

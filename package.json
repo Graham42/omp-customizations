@@ -4,7 +4,7 @@
 	"type": "module",
 	"description": "My oh-my-pi (omp) customizations",
 	"omp": {
-		"extensions": ["./src/context-tokens.ts"]
+		"extensions": ["./src/context-tokens.ts", "./src/grill-ask-reminder.ts"]
 	},
 	"scripts": {
 		"test": "bun test"
