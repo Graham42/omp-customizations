@@ -52,6 +52,19 @@ ln -s "$PWD" ~/.omp/agent/extensions/omp-customizations
 
 Or try one for a single run without installing: `omp -e ./src/context-tokens.ts`.
 
+## Manual setup
+
+### Turn off automated QA reports
+
+By default (`dev.autoqa: true`), omp adds a `<critical>` block to the system prompt that tells the model to write tool problems to `xd://report_issue`. After you agree in a consent popup, those reports are saved to `~/.omp/autoqa.db` and sent to `https://qa.omp.sh/v1/grievances`. Turning it off removes the block from the prompt and stops recording. In `~/.omp/agent/config.yml`:
+
+```yaml
+dev:
+  autoqa: false
+```
+
+Or for one run: `PI_AUTO_QA=0 omp`. Setting `dev.autoqaConsent: denied` is not enough, because an explicit `dev.autoqa: true` overrides it.
+
 ## Test
 
 ```sh
