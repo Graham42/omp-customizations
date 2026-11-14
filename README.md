@@ -65,6 +65,15 @@ dev:
 
 Or for one run: `PI_AUTO_QA=0 omp`. Setting `dev.autoqaConsent: denied` is not enough, because an explicit `dev.autoqa: true` overrides it.
 
+### Turn off SVG figures
+
+My terminal (Alacritty in tmux) can't show images, so SVG replies appear as raw XML. Turning this off stops the model from writing them and saves 155 tokens per request (OpenAI `o200k_base` tokenizer). Why, and counts for other tokenizers: [ADR 0001](docs/adr/0001-disable-svg-figures.md). In `~/.omp/agent/config.yml`:
+
+```yaml
+tui:
+  renderSvg: false
+```
+
 ## Test
 
 ```sh
